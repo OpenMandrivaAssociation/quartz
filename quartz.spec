@@ -2,7 +2,8 @@
 Summary:        Enterprise Job Scheduler for Java
 Name:           quartz
 Version:        2.1.7
-Release:        9.0%{?dist}
+Release:        9.1
+Group:		Development/Java
 Epoch:          0
 License:        ASL 2.0
 URL:            http://www.quartz-scheduler.org/
@@ -24,7 +25,7 @@ BuildRequires:  maven-source-plugin
 BuildRequires:  rmic-maven-plugin
 
 BuildRequires:  mvn(com.mchange:c3p0)
-BuildRequires:  mvn(org.apache.geronimo.specs:specs)
+BuildRequires:  mvn(org.apache.geronimo.specs:specs:pom:)
 BuildRequires:  mvn(org.apache.geronimo.specs:geronimo-commonj_1.1_spec)
 BuildRequires:  mvn(org.apache.geronimo.specs:geronimo-ejb_2.1_spec)
 BuildRequires:  mvn(javax.jms:jms)
