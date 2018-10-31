@@ -2,7 +2,7 @@
 Summary:        Enterprise Job Scheduler for Java
 Name:           quartz
 Version:        2.1.7
-Release:        9.1
+Release:        9.2
 Group:		Development/Java
 Epoch:          0
 License:        ASL 2.0
