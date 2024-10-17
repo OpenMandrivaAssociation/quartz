@@ -6,7 +6,7 @@ Release:        9.2
 Group:		Development/Java
 Epoch:          0
 License:        ASL 2.0
-URL:            http://www.quartz-scheduler.org/
+URL:            https://www.quartz-scheduler.org/
 # svn export http://svn.terracotta.org/svn/quartz/tags/quartz-2.1.7
 # tar caf quartz-2.1.7.tar.xz quartz-2.1.7
 Source0:        %{name}-%{version}.tar.xz
