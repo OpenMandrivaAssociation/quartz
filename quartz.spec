@@ -126,6 +126,11 @@ if anchor not in text:
 text = text.replace(anchor, helper + anchor, 1)
 if "import javax.xml.bind" in text or "DatatypeConverter.parseDateTime(startTimeString)" in text or "DatatypeConverter.parseDateTime(endTimeString)" in text:
     raise SystemExit("jaxb parse remains")
+old_prefixes = "public Iterator<?> getPrefixes(String namespaceURI)"
+if old_prefixes not in text:
+    raise SystemExit("missing getPrefixes")
+# JDK 27's NamespaceContext returns Iterator<String>. Iterator<?> does not override it.
+text = text.replace(old_prefixes, "public Iterator<String> getPrefixes(String namespaceURI)", 1)
 xml.write_text(text, encoding="utf-8")
 
 java_files = list(src.rglob("*.java"))
@@ -179,8 +184,7 @@ Path("pom.xml").write_text("""<?xml version="1.0" encoding="UTF-8"?>
   </dependencies>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.release>8</maven.compiler.release>
   </properties>
   <build>
     <sourceDirectory>quartz-core/src/main/java</sourceDirectory>
@@ -195,8 +199,7 @@ Path("pom.xml").write_text("""<?xml version="1.0" encoding="UTF-8"?>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.12.1</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <release>8</release>
         </configuration>
       </plugin>
       <plugin>
@@ -216,13 +219,12 @@ for needle in (
     "<artifactId>javax.servlet-api</artifactId>",
     "<artifactId>jboss-transaction-api_1.2_spec</artifactId>",
     "<version>%{version}</version>",
-    "<source>1.8</source>",
-    "<target>1.8</target>",
+    "<release>8</release>",
     "quartz-core/src/main/java",
 ):
     if needle not in pom:
         raise SystemExit("pom missing " + needle)
-for needle in ("c3p0", "Hikari", "junit", "terracotta", "SNAPSHOT", "<release>", "javaee", "javax.xml.bind"):
+for needle in ("c3p0", "Hikari", "junit", "terracotta", "SNAPSHOT", "<source>", "<target>", "javaee", "javax.xml.bind"):
     if needle in pom:
         raise SystemExit("pom still contains " + needle)
 if list(Path(".").rglob("pom.xml")) != [Path("pom.xml")]:
